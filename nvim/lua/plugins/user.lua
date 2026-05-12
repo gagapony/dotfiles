@@ -32,6 +32,13 @@ return {
           }, "\n"),
         },
       },
+      picker = {
+        source = {
+          files = { exclude = require("config.file_excludes") },
+          grep = { exclude = require("config.file_excludes") },
+          grep_word = { exclude = require("config.file_excludes") },
+        },
+      },
     },
   },
 

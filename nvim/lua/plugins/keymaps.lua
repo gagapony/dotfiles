@@ -10,9 +10,8 @@ return {
 					["<Leader>ff"] = {
 						function()
 							require("snacks").picker.files {
-								hidden = require("config.hide_patterns"),
+								hidden = true,
 								ignored = true,
-								exclude = require("config.file_excludes")
 							}
 						end,
 						desc = "Find files",
@@ -20,8 +19,8 @@ return {
 					["<Leader>fc"] = {
 						function()
 							require("snacks").picker.grep_word {
+								hidden = true,
 								ignored = true,
-								exclude = require("config.file_excludes")
 							}
 						end,
 						desc = "Find word under cursor (including ignored)",
@@ -30,7 +29,8 @@ return {
 					["<Leader>fw"] = {
 						function()
 							require("snacks").picker.grep {
-								exclude = require("config.file_excludes")
+								hidden = true,
+								ignored = true,
 							}
 						end,
 						desc = "Find words (filtered)",
@@ -40,7 +40,6 @@ return {
 							require("snacks").picker.grep {
 								hidden = true,
 								ignored = true,
-								exclude = require("config.file_excludes")
 							}
 						end,
 						desc = "Find words in all files (filtered)",
