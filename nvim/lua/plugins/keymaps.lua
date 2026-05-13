@@ -6,6 +6,7 @@ return {
 			mappings = {
 				-- first key is the mode
 				n = {
+					["<Leader>h"] = false, 
 					-- navigate buffer tabs
 					["<Leader>ff"] = {
 						function()
@@ -139,6 +140,76 @@ return {
 					},
 					-- quick save
 					["<C-s>"] = { ":w!<cr>", desc = "Save File" }, -- change description but the same command
+					-- highlight.nvim keybindings
+					["<Leader>hm"] = {
+						function()
+							require("highlight").toggle_word()
+						end,
+						desc = "Mark word",
+					},
+					["<Leader>hd"] = {
+						function()
+							require("highlight").clear_at_cursor()
+						end,
+						desc = "Remove highlight",
+					},
+					["<Leader>hD"] = {
+						function()
+							require("highlight").clear_buffer()
+						end,
+						desc = "Clear all",
+					},
+					["<Leader>hn"] = {
+						function()
+							require("highlight").jump_next()
+						end,
+						desc = "Next highlight",
+					},
+					["<Leader>hp"] = {
+						function()
+							require("highlight").jump_prev()
+						end,
+						desc = "Previous highlight",
+					},
+					["]h"] = {
+						function()
+							require("highlight").jump_next()
+						end,
+						desc = "Next highlight",
+					},
+					["[h"] = {
+						function()
+							require("highlight").jump_prev()
+						end,
+						desc = "Previous highlight",
+					},
+					["<Leader>hl"] = {
+						function()
+							require("highlight").open_picker()
+						end,
+						desc = "Highlight list",
+					},
+				},
+				v = {
+					-- highlight.nvim keybindings (visual mode)
+					["<Leader>hm"] = {
+						function()
+							require("highlight").toggle_visual()
+						end,
+						desc = "Mark selection",
+					},
+					["<Leader>hd"] = {
+						function()
+							require("highlight").clear_at_cursor()
+						end,
+						desc = "Remove highlight",
+					},
+					["<Leader>hD"] = {
+						function()
+							require("highlight").clear_buffer()
+						end,
+						desc = "Clear all",
+					},
 				},
 				t = {
 					-- setting a mapping to false will disable it
