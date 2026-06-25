@@ -34,11 +34,11 @@ return {
       },
       picker = {
         source = {
-          files = { exclude = require("config.file_excludes") },
-          grep = { exclude = require("config.file_excludes") },
-          grep_word = { 
-            exclude = require("config.file_excludes"),
-            live = true, 
+          files = { exclude = require("config.hide_patterns") },
+          grep = { exclude = require("config.hide_patterns") },
+          grep_word = {
+            exclude = require("config.hide_patterns"),
+            live = true,
           },
         },
       },
