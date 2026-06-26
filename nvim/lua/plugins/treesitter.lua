@@ -1,29 +1,20 @@
+-- v6: treesitter 配置已迁移到 AstroCore 的 opts.treesitter
+-- highlight / indent / textobjects 默认由 AstroNvim v6 开启（含完整映射）
+-- 这里只声明需要预装 parser 的语言列表
 return {
-  "nvim-treesitter/nvim-treesitter",
-  main = "nvim-treesitter.configs",
-
+  "AstroNvim/astrocore",
+  ---@type AstroCoreOpts
   opts = {
-    ensure_installed = {
-      "lua",
-      "vim",
-      "c",
-      "cpp",
-      "nix",
-      "python",
-      "markdown",
-      -- add more arguments for adding more treesitter parsers
-    },
-    highlight = { enable = true },
-    indent = { enable = true },
-    -- 如果有 textobjects 配置，也写在这里
-    textobjects = {
-      select = {
-        enable = true,
-        lookahead = true,
-        keymaps = {
-          ["af"] = "@function.outer",
-          ["if"] = "@function.inner",
-        },
+    treesitter = {
+      ensure_installed = {
+        "lua",
+        "vim",
+        "c",
+        "cpp",
+        "nix",
+        "python",
+        "markdown",
+        -- add more arguments for adding more treesitter parsers
       },
     },
   },

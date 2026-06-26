@@ -34,8 +34,12 @@ return {
                 if package.loaded["neo-tree"] then
                   vim.cmd("Neotree close")
                 end
-                -- 打开 alpha 启动页
-                require("alpha").start()
+                -- 打开 dashboard 启动页：v6 用 snacks.dashboard，兼容旧 alpha
+                if package.loaded["snacks"] and require("snacks").dashboard then
+                  require("snacks").dashboard.open()
+                elseif pcall(require, "alpha") then
+                  require("alpha").start()
+                end
               end
             end,
           },

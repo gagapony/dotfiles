@@ -208,6 +208,19 @@ Expected:
 - `AstroNvim` commit 变为新的（v6 系列）
 - `neoconf.nvim` / `vim-illuminate` 条目消失
 
+- [ ] **Step 4: 验证 AstroCore/AstroLSP/AstroUI 升到了 v3/v4（关键！）**
+
+> **执行中发现的坑**：`Lazy sync` 在删除 lock 后基于"已安装"状态重建 lock，**不会强制把已存在的核心插件跨大版本升级**。AstroNvim/nvim-treesitter 因分支/版本变化被重新 clone，但 astrocore/astrolsp/astroui 的旧 clone（v2/v3）会被保留，导致 `astrocore.treesitter` 模块缺失、treesitter 配置静默失效、AstroLSP 新 API 不可用。
+
+Run:
+```bash
+for p in astrocore astrolsp astroui; do printf "%s: " "$p"; git -C ~/.local/share/nvim/lazy/$p describe --tags 2>/dev/null; done
+```
+Expected: `astrocore: v3.x` / `astrolsp: v4.x` / `astroui: v4.x`。若任一仍为旧版，强制重新 clone：
+```bash
+rm -rf ~/.local/share/nvim/lazy/{astrocore,astrolsp,astroui} && bash scripts/nvim_tool.sh sync
+```
+
 ---
 
 ## Task 7: 健康检查与交互式验证
