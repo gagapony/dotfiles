@@ -13,7 +13,10 @@ return {
     -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
     highlights = {
       init = { -- this table overrides highlights in all themes
-        -- Normal = { bg = "#000000" },
+        -- Neovim 0.12 runtime links NormalFloat→Pmenu and overrides catppuccin,
+        -- so floating windows (snacks picker / hover / blink docs) render with a
+        -- darker/mismatched background. Pin NormalFloat to the editor (Normal).
+        NormalFloat = { link = "Normal" },
       },
       astrodark = { -- a table of overrides/changes when applying the astrotheme theme
         -- Normal = { bg = "#000000" },

@@ -6,7 +6,7 @@ return {
 			mappings = {
 				-- first key is the mode
 				n = {
-					["<Leader>h"] = false, 
+					["<Leader>h"] = false,
 					-- navigate buffer tabs
 					["<Leader>ff"] = {
 						function()
