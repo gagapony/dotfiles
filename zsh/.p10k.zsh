@@ -59,7 +59,6 @@
     newline                   # \n
     virtualenv                # python virtual environment
     anaconda                  # conda 环境
-    nix_shell                 # nix-shell/develop
     prompt_char               # prompt symbol
   )
 
@@ -86,9 +85,6 @@
   # Show just the conda env name (e.g. py2.7.12), not the full prefix path.
   typeset -g POWERLEVEL9K_ANACONDA_CONTENT_EXPANSION='($CONDA_DEFAULT_ENV)'
   typeset -g POWERLEVEL9K_ANACONDA_FOREGROUND=#9DC097
-  # nix-shell: show env name (e.g. impure/pure), hide the package list.
-  typeset -g POWERLEVEL9K_NIX_SHELL_FOREGROUND=#8FB3BE
-  typeset -g POWERLEVEL9K_NIX_SHELL_CONTENT_EXPANSION='(${IN_NIX_SHELL})'
 
   # Add an empty line before each prompt except the first. This doesn't emulate the bug
   # in Pure that makes prompt drift down whenever you use the Alt-C binding from fzf or similar.
