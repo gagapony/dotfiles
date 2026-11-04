@@ -498,7 +498,10 @@ set -g pane-border-format "─────────────────�
 setw -g mode-keys vi
 
 bind-key -T copy-mode-vi v send-keys -X begin-selection
-bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -i"
+# Keep Linux's existing xclip binding; macOS provides pbcopy natively.
+if-shell 'test "$(uname -s)" = Darwin' \
+  'bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel pbcopy' \
+  'bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -selection clipboard -i"'
 # set -g pane-border-style fg=XXX
 
 

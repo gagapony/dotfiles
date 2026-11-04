@@ -7,11 +7,12 @@
 
   outputs = { self, nixpkgs }:
     let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      systems = [ "x86_64-linux" "aarch64-darwin" ];
     in
     {
-      packages.${system} = {
+      packages = nixpkgs.lib.genAttrs systems (system:
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in {
         zsh-config = pkgs.stdenv.mkDerivation rec {
           pname = "zsh-config";
           version = "1.0.0";
@@ -66,6 +67,6 @@
             rm -rf $out/config/README.md
           '';
         };
-      };
+      });
     };
 }
