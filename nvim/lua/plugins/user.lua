@@ -11,7 +11,7 @@ return {
   {
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
-    config = function() require("lsp_signature").setup() end,
+    config = function() require("lsp_signature").setup { handler_opts = { border = "none" } } end,
   },
 
   -- == Examples of Overriding Plugins ==
@@ -30,16 +30,6 @@ return {
             "██║  ██╗╚██████╔╝██║ ╚████║   ██║   ",
             "╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ",
           }, "\n"),
-        },
-      },
-      picker = {
-        source = {
-          files = { exclude = require("config.hide_patterns") },
-          grep = { exclude = require("config.hide_patterns") },
-          grep_word = {
-            exclude = require("config.hide_patterns"),
-            live = true,
-          },
         },
       },
     },

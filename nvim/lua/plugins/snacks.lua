@@ -2,7 +2,6 @@
 -- The nvim_custom source depended on its core.* framework; those deps are
 -- inlined here as plain Neovim API so no core.* is imported:
 --   core.hl.get(name, fb)            -> hl_get  (nvim_get_hl + to_hex + reverse + fallback)
---   plugins.lib.status.colors.accent -> accent  (4-candidate loop over hl_get)
 --   core.event.on("theme:changed",f) -> ColorScheme autocmd registered in init
 
 -- to_hex mirrors core.hl.to_hex: number -> "#rrggbb", nil -> "none", else as-is.
@@ -32,23 +31,6 @@ local function hl_get(name, fallback)
 	hl.bg = to_hex(hl.bg or (fallback and fallback.bg))
 	hl.sp = to_hex(hl.sp)
 	return hl
-end
-
--- Pick an accent color: first defined of Special / FloatTitle / DiagnosticInfo / Function.
-local function accent()
-	local candidates = {
-		{ "Special", { fg = "#cba6f7" } },
-		{ "FloatTitle", { fg = "#89b4fa" } },
-		{ "DiagnosticInfo", { fg = "#89b4fa" } },
-		{ "Function", { fg = "#89b4fa" } },
-	}
-	for _, item in ipairs(candidates) do
-		local attr = hl_get(item[1], item[2])
-		if attr.fg and attr.fg ~= "none" then
-			return attr.fg
-		end
-	end
-	return "#89b4fa"
 end
 
 -- Convert a hl attr table's "#rrggbb" string values to 0xrrggbb ints for snacks
@@ -146,8 +128,6 @@ local function setup_picker_highlights()
 	local status = picker_attr("StatusLine", float)
 	local visual = picker_attr("Visual", status)
 	local pmenu = picker_attr("Pmenu", float)
-	local title = picker_attr("FloatTitle", { fg = status.fg, bg = status.bg })
-	local ac = { fg = picker_color(accent()), bg = title.bg }
 
 	local base_bg = float.bg or normal.bg
 	local input_bg = picker_blend(status.bg or visual.bg, base_bg, 0.45)
@@ -156,13 +136,8 @@ local function setup_picker_highlights()
 	local fg = float.fg or normal.fg
 
 	vim.api.nvim_set_hl(0, "SnacksPickerInput", { fg = fg, bg = input_bg })
-	vim.api.nvim_set_hl(0, "SnacksPickerInputBorder", { fg = input_bg, bg = input_bg })
-	vim.api.nvim_set_hl(0, "SnacksPickerInputTitle", { fg = title.fg or ac.fg or fg, bg = input_bg, bold = true })
 	vim.api.nvim_set_hl(0, "SnacksPickerList", { fg = fg, bg = list_bg })
-	vim.api.nvim_set_hl(0, "SnacksPickerListBorder", { fg = list_bg, bg = list_bg })
 	vim.api.nvim_set_hl(0, "SnacksPickerPreview", { fg = fg, bg = preview_bg })
-	vim.api.nvim_set_hl(0, "SnacksPickerPreviewBorder", { fg = preview_bg, bg = preview_bg })
-	vim.api.nvim_set_hl(0, "SnacksPickerPreviewTitle", { fg = ac.fg or title.fg or fg, bg = preview_bg, bold = true })
 end
 
 local function apply_snacks_colors()
@@ -242,14 +217,13 @@ return {
 						},
 					},
 					gagapony_bottom = {
-						preview = false,
 						layout = {
 							box = "vertical",
 							backdrop = false,
 							row = -1,
 							width = 0,
 							height = 0.4,
-							min_height = 20,
+							min_height = 12,
 							border = "none",
 							{
 								win = "input",
@@ -259,6 +233,9 @@ return {
 								title_pos = "left",
 							},
 							{ win = "list", border = "none" },
+							-- preview node must exist for the window to be enabled; the `lines` source
+							-- uses preview = "main", so it overlays the editor window above the picker
+							{ win = "preview", border = "none" },
 						},
 					},
 					-- Borderless select layout, modelled on snacks' built-in `select` preset.
@@ -283,19 +260,19 @@ return {
 					input = {
 						border = "none",
 						wo = {
-							winhighlight = "Normal:SnacksPickerInput,NormalFloat:SnacksPickerInput,FloatBorder:SnacksPickerInputBorder,FloatTitle:SnacksPickerInputTitle",
+							winhighlight = "Normal:SnacksPickerInput,NormalFloat:SnacksPickerInput",
 						},
 					},
 					list = {
 						border = "none",
 						wo = {
-							winhighlight = "Normal:SnacksPickerList,NormalFloat:SnacksPickerList,FloatBorder:SnacksPickerListBorder,CursorLine:Visual",
+							winhighlight = "Normal:SnacksPickerList,NormalFloat:SnacksPickerList,CursorLine:Visual",
 						},
 					},
 					preview = {
 						border = "none",
 						wo = {
-							winhighlight = "Normal:SnacksPickerPreview,NormalFloat:SnacksPickerPreview,FloatBorder:SnacksPickerPreviewBorder,FloatTitle:SnacksPickerPreviewTitle",
+							winhighlight = "Normal:SnacksPickerPreview,NormalFloat:SnacksPickerPreview",
 						},
 					},
 				},
@@ -318,7 +295,6 @@ return {
 			})
 			opts.styles = vim.tbl_deep_extend("force", opts.styles or {}, {
 				notification = {
-					border = "none",
 					zindex = 100,
 					ft = "markdown",
 					wo = { winblend = 5, wrap = false, conceallevel = 2, colorcolumn = "" },

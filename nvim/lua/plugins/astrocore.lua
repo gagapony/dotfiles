@@ -48,6 +48,7 @@ return {
 				signcolumn = "yes", -- sets vim.opt.signcolumn to yes
 				wrap = false, -- sets vim.opt.wrap
 				colorcolumn = "120";
+				winborder = "none", -- flat style: no drawn lines around diagnostic floats, hover, signature, terminal, ...
 				clipboard = "unnamedplus";
 				fillchars = { vert = " " }, -- hide the vertical window separator; separate windows by bg color instead
 			},
